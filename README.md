@@ -9,7 +9,9 @@ Specific single page application dev server with proxy to backend capabilities.
 
 ## Running as command line utility
 
-`devserve --file /=index.html --proxy /api/=http://myapi:3333/ --dir /static/=static --base /home/hoho/www --port=3001`
+```
+devserve --file /=index.html --proxy /api/=http://myapi:3333/ --dir /static/=static --base /home/hoho/www --port=3001
+```
 
 This command will run server on port `3001`. For URIs starting with `/static/`
 it will serve files from `/home/hoho/www/static` folder, for URIs starting with
