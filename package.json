@@ -1,0 +1,33 @@
+{
+    "name": "devserve",
+    "version": "0.0.0",
+    "description": "Specific single page application dev server with proxy to backend capabilities",
+    "main": "devserve.js",
+    "directories": {
+        "test": "test",
+        "bin": "bin"
+    },
+    "bin": {
+        "devserve": "bin/devserve"
+    },
+    "scripts": {
+        "test": "mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/hoho/devserve.git"
+    },
+    "author": "Marat Abdullin <dakota@brokenpipe.ru>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/hoho/devserve/issues"
+    },
+    "dependencies": {
+        "commander": "~2.3.0",
+        "colors": "~0.6.2"
+    },
+    "devDependencies": {
+        "mocha": "1.21.3",
+        "should": "4.0.4"
+    }
+}

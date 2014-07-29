@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+'use strict';
+
+
+function keyval(val, memo) {
+    var ret = {};
+    val = val.split(/\s*=\s*/, 2);
+    ret[memo.what] = val[1];
+    memo.config[val[0]] = ret;
+    return memo;
+}
+
+
+var devServe = require('../devserve'),
+    fs = require('fs'),
+    path = require('path'),
+    program = require('commander');
+
+var packageJSON = path.join(path.dirname(require.resolve('../devserve')), 'package.json'),
+    config = {};
+
+
+program
+    .version(JSON.parse(fs.readFileSync(packageJSON, {encoding: 'utf8'})).version)
+    .usage('[options]')
+    .option('-f, --file <uri>=<filename>', 'File to serve', keyval, {what: 'file', config: config})
+    .option('-d, --dir <uri>=<dir>', 'Directory to serve', keyval, {what: 'dir', config: config})
+    .option('-p, --proxy <uri>=<proxy>', 'Proxy to backend', keyval, {what: 'proxy', config: config})
+    .option('-b, --base <dir>', 'Base directory')
+    .option('-l, --port <n>', 'Server port (8080)', parseInt)
+    .parse(process.argv);
+
+devServe(config, program.base, program.port);
