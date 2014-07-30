@@ -1,6 +1,6 @@
 {
     "name": "devserve",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Specific single page application dev server with proxy to backend capabilities",
     "main": "devserve.js",
     "directories": {
