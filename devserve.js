@@ -43,7 +43,7 @@ module.exports = function devServe(config, base, port) {
                                 .pipe(o);
                         } else {
                             o.statusCode = 404;
-                            o.end();
+                            o.end('Not Found');
                         }
                     }
                 });
@@ -57,7 +57,10 @@ module.exports = function devServe(config, base, port) {
                     handler: function _file(i, o) {
                         console.log(FILE_LOG, i.method, i.url, file);
                         fs.createReadStream(file)
-                            .on('error', function _409() { o.statusCode = 409; o.end(); })
+                            .on('error', function _409() {
+                                o.statusCode = 409;
+                                o.end('Cannot read file');
+                            })
                             .pipe(o);
                     }
                 });
