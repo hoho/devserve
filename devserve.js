@@ -11,7 +11,20 @@ module.exports = function devServe(config, base, port) {
     var serverPort = port || +process.env.SERVER_PORT || 8080,
         router = [],
         FILE_LOG = '[%s]'.magenta + ' %s '.green + '<- %s'.grey,
-        PROXY_LOG = '[%s]'.magenta + ' %s '.green + '<->'.grey + ' %s%s = '.grey + '%s'.cyan;
+        PROXY_LOG = '[%s]'.magenta + ' %s '.green + '<->'.grey + ' %s%s = '.grey + '%s'.cyan,
+        // Most commonly used mime types.
+        MIME = {
+            '.html': 'text/html',
+            '.css': 'text/css',
+            '.js': 'application/x-javascript',
+            '.json': 'application/json',
+            '.xml': 'text/xml',
+            '.gif': 'image/gif',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.png': 'image/png',
+            '.ico': 'image/x-icon'
+        };
 
     base = path.resolve(base || '.');
 
@@ -37,6 +50,7 @@ module.exports = function devServe(config, base, port) {
                     handler: function _directory(i, o) {
                         var src = path.join(dir, url.parse(i.url.substr(p.length)).pathname || '');
                         console.log(FILE_LOG, i.method, i.url, src);
+                        o.setHeader('Content-Type', MIME[path.extname(src)] || 'text/plain');
                         if (fs.existsSync(src)) {
                             fs.createReadStream(src)
                                 .on('error', function _405() { o.statusCode = 405; o.end(); })
@@ -56,6 +70,7 @@ module.exports = function devServe(config, base, port) {
                     location: p,
                     handler: function _file(i, o) {
                         console.log(FILE_LOG, i.method, i.url, file);
+                        o.setHeader('Content-Type', MIME[path.extname(file)] || 'text/plain');
                         fs.createReadStream(file)
                             .on('error', function _409() {
                                 o.statusCode = 409;
