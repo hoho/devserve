@@ -27,11 +27,12 @@ devServe = require('devserve');
 devServe({
     '/': {file: 'index.html'},
     '/api/': {proxy: 'http://myapi:3333/'},
+    '/api2/': {callback: function(request, response) { response.end('Callback called'); }}
     '/static/': {dir: 'static'}
 }, '/home/hoho/www', 3001);
 ```
 
-This code will do the same as command line example above.
+This code will do the same as command line example above, plus a callback for `/api2/*`.
 
 Base direcrory and port are optional, current working directory and `8080` are
 used by default.
