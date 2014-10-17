@@ -12,6 +12,7 @@ module.exports = function devServe(config, base, port) {
         router = [],
         FILE_LOG = '[%s]'.magenta + ' %s '.green + '<- %s'.grey,
         PROXY_LOG = '[%s]'.magenta + ' %s '.green + '<->'.grey + ' %s%s = '.grey + '%s'.cyan,
+        CALLBACK_LOG = '[%s]'.magenta + ' %s '.green + '<- CALLBACK'.grey,
         // Most commonly used mime types.
         MIME = {
             '.html': 'text/html',
@@ -40,7 +41,8 @@ module.exports = function devServe(config, base, port) {
             var location = config[p],
                 dir = location.dir,
                 file = location.file,
-                proxy = location.proxy;
+                proxy = location.proxy,
+                callback = location.callback;
 
             if (dir) {
                 dir = rel(dir);
@@ -122,6 +124,17 @@ module.exports = function devServe(config, base, port) {
                                     o.end('Proxy error: ' + e.message + '\n');
                                 })
                         );
+                    }
+                });
+            }
+
+            if (callback) {
+                console.log(' callback [%s]'.blue, p);
+                router.push({
+                    location: p,
+                    handler: function _file(i, o) {
+                        console.log(CALLBACK_LOG, i.method, i.url);
+                        callback(i, o);
                     }
                 });
             }

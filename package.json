@@ -1,6 +1,6 @@
 {
     "name": "devserve",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Specific single page application dev server with proxy to backend capabilities",
     "main": "devserve.js",
     "directories": {
@@ -24,10 +24,10 @@
     },
     "dependencies": {
         "commander": "~2.3.0",
-        "colors": "~0.6.2"
+        "colors": "~1.0.3"
     },
     "devDependencies": {
-        "mocha": "1.21.3",
+        "mocha": "1.21.5",
         "should": "4.0.4"
     }
 }
