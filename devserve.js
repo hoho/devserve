@@ -10,9 +10,10 @@ module.exports = function devServe(config, base, port) {
 
     var serverPort = port || +process.env.SERVER_PORT || 8080,
         router = [],
-        FILE_LOG = '[%s]'.magenta + ' %s '.green + '<- %s'.grey,
-        PROXY_LOG = '[%s]'.magenta + ' %s '.green + '<->'.grey + ' %s%s = '.grey + '%s'.cyan,
-        CALLBACK_LOG = '[%s]'.magenta + ' %s '.green + '<- CALLBACK'.grey,
+        FILE_LOG = '[%s] '.magenta + 'FILE'.grey + ' %s '.green + '<- %s'.grey,
+        PROXY_THERE_LOG = '[%s] '.magenta + 'PROXY ->'.grey + ' %s '.green + '->'.grey + ' %s%s'.grey,
+        PROXY_BACK_LOG = '[%s] '.magenta + 'PROXY <-'.grey + ' %s '.green + '<-'.grey + ' %s%s = '.grey + '%s'.cyan,
+        CALLBACK_LOG = '[%s] '.magenta + 'CALLBACK'.grey + ' %s '.green + '<- CALLBACK'.grey,
         // Most commonly used mime types.
         MIME = {
             '.html': 'text/html',
@@ -100,6 +101,9 @@ module.exports = function devServe(config, base, port) {
                         var ur = i.url,
                             dst = alias ? url.resolve(alias, ur.substr(p.length)) : ur;
 
+                        console.log(PROXY_THERE_LOG, i.method,
+                            url.parse(ur).pathname, proxyUrl.host, url.parse(dst).pathname);
+
                         i.headers.host = proxyUrl.host;
                         i.pipe(request
                                 .request({
@@ -110,7 +114,7 @@ module.exports = function devServe(config, base, port) {
                                     headers: i.headers
                                 })
                                 .on('response', function proxy_response(resp) {
-                                    console.log(PROXY_LOG, i.method,
+                                    console.log(PROXY_BACK_LOG, i.method,
                                         url.parse(ur).pathname, proxyUrl.host, url.parse(dst).pathname, resp.statusCode);
                                     o.statusCode = resp.statusCode;
                                     for (var header in resp.headers || {}) {
