@@ -1,6 +1,6 @@
 // Originally written by Yuri Maly.
 
-module.exports = function devServe(config, base, port) {
+module.exports = function devServe(config, base, port, iface) {
     var fs = require('fs'),
         path = require('path'),
         url = require('url'),
@@ -168,7 +168,7 @@ module.exports = function devServe(config, base, port) {
             }
         })
         .on('clientError', function _err(e) {  })
-        .listen(serverPort, '127.0.0.1', function _ok() {
+        .listen(serverPort, iface || '127.0.0.1', function _ok() {
             console.log(('=> http://localhost:' + serverPort).blue);
         });
 };

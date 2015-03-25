@@ -29,6 +29,7 @@ program
     .option('-p, --proxy <uri>=<proxy>', 'Proxy to backend', keyval, {what: 'proxy', config: config})
     .option('-b, --base <dir>', 'Base directory')
     .option('-l, --port <n>', 'Server port (8080)', parseInt)
+    .option('-i, --interface <interface>', 'Network interface (default: 127.0.0.1)')
     .parse(process.argv);
 
-devServe(config, program.base, program.port);
+devServe(config, program.base, program.port, program.interface);
