@@ -111,7 +111,8 @@ module.exports = function devServe(config, base, port, iface) {
                                     hostname: proxyUrl.hostname,
                                     port: proxyUrl.port,
                                     path: dst,
-                                    headers: i.headers
+                                    headers: i.headers,
+                                    rejectUnauthorized: false
                                 })
                                 .on('response', function proxy_response(resp) {
                                     console.log(PROXY_BACK_LOG, i.method,
